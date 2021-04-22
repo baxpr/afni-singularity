@@ -70,7 +70,8 @@ From: ubuntu:20.04
 
 
 %environment
-  #export PATH=/opt/afni/abin:${PATH}
+  export R_LIBS=/opt/R
+  export PATH=/opt/afni/abin:${PATH}
 
 
 %runscript
