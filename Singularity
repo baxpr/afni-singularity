@@ -24,7 +24,13 @@ From: ubuntu:20.04
   apt install -y software-properties-common
   add-apt-repository universe
   apt update
-  apt install -y curl wget zip unzip bc
+  apt install -y curl wget zip unzip bc ghostscript imagemagick
+
+  ## Fix imagemagick policy to allow output. See https://usn.ubuntu.com/3785-1/
+  sed -i 's/rights="none" pattern="PDF"/rights="read | write" pattern="PDF"/' \
+    /etc/ImageMagick-6/policy.xml
+  sed -i 's/rights="none" pattern="@\*"/rights="read" pattern="@*"/' \
+    /etc/ImageMagick-6/policy.xml
 
   ## For AFNI on Ubuntu 20.04, https://afni.nimh.nih.gov/
   
