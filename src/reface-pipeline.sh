@@ -41,18 +41,18 @@ thedate=$(date)
 cd /OUTPUTS/${nm}_QC
 for piece in deface face face_plus reface reface_plus ; do
 
-	montage \
-		-mode concatenate ${nm}_${piece}.???.png \
-		-tile 1x -trim -quality 100 -background white -gravity center \
-		-border 20 -bordercolor white ${piece}.png
+montage \
+-mode concatenate ${nm}.${piece}.???.png \
+-tile 1x -trim -quality 100 -background white -gravity center -resize 2400x2800 \
+-border 20 -bordercolor white ${piece}.png
 
-	convert -size 2600x3365 xc:white \
-		-gravity center \( ${piece}.png -geometry '2400x2400+0-0' \) -composite \
-		-gravity center -pointsize 48 -annotate +0-1250 \
-		"${info_string}  :   ${piece}" \
-		-gravity SouthEast -pointsize 48 -annotate +100+100 "${thedate}" \
-		${piece}.png
-	
+convert -size 2600x3365 xc:white \
+-gravity center \( ${piece}.png -resize '2400x3000' \) -composite \
+-gravity center -pointsize 48 -annotate +0-1600 \
+"${info_string}  :   ${piece}" \
+-gravity SouthEast -pointsize 48 -annotate +100+50 "${thedate}" \
+${piece}.png
+
 done
 
 convert deface.png face.png face_plus.png reface.png reface_plus.png /OUTPUTS/refacer.pdf
