@@ -2,7 +2,7 @@
 
 singularity run --contain --cleanenv \
 	--bind INPUTS:/INPUTS \
-	--bind $OUTPUTS:/OUTPUTS \
+	--bind OUTPUTS:/OUTPUTS \
 	afnitest.simg \
 	@afni_refacer_run \
 	-input /INPUTS/t1.nii.gz \
