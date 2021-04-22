@@ -29,20 +29,19 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Reface
-nm=$(basename "${img_niigz}" .nii.gz)
 @afni_refacer_run \
 	-input "${img_niigz}" \
 	-mode_all \
-	-prefix /OUTPUTS/${nm}
+	-prefix /OUTPUTS/img
 
 # Make PDF
 info_string="$project $subject $session $scan"
 thedate=$(date)
-cd /OUTPUTS/${nm}_QC
+cd /OUTPUTS/img_QC
 for piece in deface face face_plus reface reface_plus ; do
 
 	montage \
-		-mode concatenate ${nm}.${piece}.???.png \
+		-mode concatenate img.${piece}.???.png \
 		-tile 1x -trim -quality 100 -background white -gravity center -resize 2400x2800 \
 		-border 20 -bordercolor white ${piece}.png
 
@@ -56,4 +55,4 @@ for piece in deface face face_plus reface reface_plus ; do
 done
 
 convert deface.png face.png face_plus.png reface.png reface_plus.png /OUTPUTS/refacer.pdf
-
+rm deface.png face.png face_plus.png reface.png reface_plus.png
