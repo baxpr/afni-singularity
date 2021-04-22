@@ -6,12 +6,9 @@ From: ubuntu:20.04
   Basic install of AFNI package in a singularity container.
 
 
-%setup
-  mkdir -p ${SINGULARITY_ROOTFS}/opt/afni
-
-
 %files
-  README.md    /opt/afni
+  README.md    /opt
+  src          /opt
 
  
 %labels
@@ -20,7 +17,9 @@ From: ubuntu:20.04
 
 %post
 
-  ## General tools ("universe" needed for AFNI)
+  ## General tools
+  #     universe needed for AFNI
+  #     software-properties-common needed for universe
   apt update
   apt install -y software-properties-common
   add-apt-repository universe
@@ -49,30 +48,31 @@ From: ubuntu:20.04
   ln -s /usr/lib/x86_64-linux-gnu/libgsl.so.23 /usr/lib/x86_64-linux-gnu/libgsl.so.19
 
   # AFNI binaries
-  cd /opt/afni
+  mkdir /opt/afni && cd /opt/afni
   curl -O https://afni.nimh.nih.gov/pub/dist/bin/misc/@update.afni.binaries
   tcsh @update.afni.binaries -package linux_ubuntu_16_64 -do_extras -bindir /opt/afni/abin
 
   # AFNI setup and check
-  cp /opt/afni/abin/AFNI.afnirc $HOME/.afnirc
   export PATH=/opt/afni/abin:${PATH}
   suma -update_env
   afni_system_check.py -check_all
 
-  # Install R
+  # Install R packages for AFNI
   export R_LIBS=/opt/R
-  mkdir  $R_LIBS
-  echo  'export R_LIBS=/opt/R' >> ~/.bashrc
+  mkdir $R_LIBS
   rPkgsInstall -pkgs ALL
 
   ## Create input/output directories for binding
-  mkdir /INPUTS && mkdir /OUTPUTS
+  mkdir /INPUTS && mkdir /OUTPUTS && mkdir /wkdir
 
 
 %environment
   export R_LIBS=/opt/R
   export PATH=/opt/afni/abin:${PATH}
+  export PATH=/opt/src:${PATH}
 
 
 %runscript
-  bash "$@"
+
+  # Run the provided command line in xvfb
+  xwrapper.sh "$@"
