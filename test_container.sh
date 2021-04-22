@@ -5,4 +5,4 @@ singularity run --contain --cleanenv \
 	--bind INPUTS:/INPUTS \
 	--bind OUTPUTS:/OUTPUTS \
 	afnitest.simg \
-	reface_pipeline.sh
+	reface-pipeline.sh
