@@ -21,6 +21,8 @@ From: ubuntu:20.04
 %post
 
   ## General tools ("universe" needed for AFNI)
+  apt update
+  apt install -y software-properties-common
   add-apt-repository universe
   apt update
   apt install -y curl wget zip unzip bc
@@ -53,6 +55,7 @@ From: ubuntu:20.04
 
   # AFNI setup and check
   cp /opt/afni/abin/AFNI.afnirc $HOME/.afnirc
+  export PATH=/opt/afni/abin:${PATH}
   suma -update_env
   afni_system_check.py -check_all
 
