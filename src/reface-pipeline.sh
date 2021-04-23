@@ -43,14 +43,16 @@ for piece in deface face face_plus reface reface_plus ; do
 	montage \
 		-mode concatenate img.${piece}.???.png \
 		-tile 1x -trim -quality 100 -background white -gravity center -resize 2400x2800 \
-		-border 20 -bordercolor white ${piece}.png
+		-border 20 -bordercolor white ${piece}0.png
 
 	convert -size 2600x3365 xc:white \
-		-gravity center \( ${piece}.png -resize '2400x3000' \) -composite \
+		-gravity center \( ${piece}0.png -resize '2400x3000' \) -composite \
 		-gravity center -pointsize 48 -annotate +0-1600 \
 		"${info_string}  :   ${piece}" \
 		-gravity SouthEast -pointsize 48 -annotate +100+50 "${thedate}" \
 		${piece}.png
+	
+	rm ${piece}0.png
 
 done
 
