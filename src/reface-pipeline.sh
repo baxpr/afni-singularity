@@ -42,7 +42,7 @@ for piece in deface face face_plus reface reface_plus ; do
 
 	montage \
 		-mode concatenate img.${piece}.???.png \
-		-tile 1x -trim -quality 100 -background white -gravity center -resize 2400x2800 \
+		-tile 1x -trim -quality 100 -background white -gravity center -resize 1200x1400 \
 		-border 20 -bordercolor white ${piece}.png
 
 	convert -size 2600x3365 xc:white \
