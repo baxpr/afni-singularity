@@ -8,6 +8,7 @@ export subject=NO_SUBJ
 export session=NO_SESS
 export scan=NO_SCAN
 export img_niigz=/INPUTS/t1.nii.gz
+export OUT_DIR=/OUTPUTS
 
 # Parse options
 while [[ $# -gt 0 ]]; do
@@ -23,6 +24,8 @@ while [[ $# -gt 0 ]]; do
 			export scan="${2}"; shift; shift ;;
 		--img_niigz)
 			export img_niigz="${2}"; shift; shift ;;
+		--out_dir)
+			export out_dir="${2}"; shift; shift ;;
 		*)
 			echo Unknown input "${1}"; shift ;;
 	esac
@@ -32,12 +35,12 @@ done
 @afni_refacer_run \
 	-input "${img_niigz}" \
 	-mode_all \
-	-prefix /OUTPUTS/img
+	-prefix "${out_dir}"/img
 
 # Make PDF
 info_string="$project $subject $session $scan"
 thedate=$(date)
-cd /OUTPUTS/img_QC
+cd "${out_dir}"/img_QC
 for piece in deface face face_plus reface reface_plus ; do
 
 	montage \
@@ -54,5 +57,5 @@ for piece in deface face face_plus reface reface_plus ; do
 
 done
 
-convert deface.png face.png face_plus.png reface.png reface_plus.png /OUTPUTS/refacer.pdf
+convert deface.png face.png face_plus.png reface.png reface_plus.png "${out_dir}"/refacer.pdf
 rm deface.png face.png face_plus.png reface.png reface_plus.png
